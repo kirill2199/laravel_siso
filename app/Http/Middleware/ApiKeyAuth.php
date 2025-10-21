@@ -9,7 +9,10 @@ class ApiKeyAuth
 {
     public function handle(Request $request, Closure $next)
     {
-        if ($request->query('key') !== config('app.api_key')) {
+        $validKey = config('app.api_key');
+        $providedKey = $request->query('key');
+
+        if (!$providedKey || $providedKey !== $validKey) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
